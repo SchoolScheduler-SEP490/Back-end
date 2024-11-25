@@ -6,6 +6,7 @@ using SchedulifySystem.Service.BusinessModels.TeacherAssignmentBusinessModels;
 using SchedulifySystem.Service.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -47,11 +48,19 @@ namespace SchedulifySystem.Service.BusinessModels.ScheduleBusinessMoldes
         public int MaxPeriodPerSession { get; set; } = 5;
         public int MinPeriodPerSession { get; set; } = 0;
         public int TermId { get; set; }
-        public int DaysInWeek { get; set; } = 5;
+        private int _daysInWeek;
+
+        [Range(3, 6)]
+        public int DaysInWeek
+        {
+
+            get => _daysInWeek;
+            set => _daysInWeek = value >= 3 && value <= 5 ? value + 1 : throw new ArgumentOutOfRangeException(nameof(DaysInWeek), "Value must be between 3 and 5.");
+        }
 
         public int GetAvailableSlotsPerWeek()
         {
-            return (DaysInWeek + 1) * 10 + 1;
+            return (DaysInWeek) * 10 + 1;
         }
     }
 }
