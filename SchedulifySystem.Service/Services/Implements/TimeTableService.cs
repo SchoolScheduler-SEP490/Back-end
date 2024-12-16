@@ -171,7 +171,7 @@ namespace SchedulifySystem.Service.Services.Implements
                 // Chọn lọc
                 timetablePopulation.AddRange(timetableChildren);
                 //TabuSearch(timetablePopulation[0], parameters);
-                //timetablePopulation = timetablePopulation.Where(u => u.Age < u.Longevity).OrderBy(i => i.Adaptability).Take(100).ToList();
+                timetablePopulation = timetablePopulation.Where(u => u.Age < u.Longevity).OrderBy(i => i.Adaptability).Take(100).ToList();
 
                 var topIndividuals = timetablePopulation.OrderBy(i => i.Adaptability).Take(80).ToList();
                 var randomIndividuals = timetablePopulation.Shuffle().Take(20).ToList();
