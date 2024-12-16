@@ -54,7 +54,7 @@ namespace SchedulifySystem.API.Controllers
         }
 
         [HttpGet("available-rooms")]
-        public Task<IActionResult> GetRoomScheduleInWeek(int schoolId, GetRoomInSlotModel getRoomInSlotModel)
+        public Task<IActionResult> GetRoomScheduleInWeek(int schoolId, [FromQuery]GetRoomInSlotModel getRoomInSlotModel)
         {
             return ValidateAndExecute(() => _timetableService.GetRoomScheduleInWeek(schoolId, getRoomInSlotModel));
         }
