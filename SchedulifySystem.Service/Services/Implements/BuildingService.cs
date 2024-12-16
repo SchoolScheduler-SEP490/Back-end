@@ -137,6 +137,10 @@ namespace SchedulifySystem.Service.Services.Implements
         {
             var _ = await _unitOfWork.SchoolRepo.GetByIdAsync(schoolId) ?? throw new NotExistsException(ConstantResponse.SCHOOL_NOT_FOUND);
             var buildings = await _unitOfWork.BuildingRepo.ToPaginationIncludeAsync(pageIndex, pageSize, filter: b => b.SchoolId == schoolId && !b.IsDeleted, include: query => query.Include(b => b.Rooms));
+            if (buildings.Items.Count == 0)
+            {
+                throw new NotExistsException("Hiện không có tòa nhà nào tồn tại.");
+            }
             var response = _mapper.Map<Pagination<BuildingViewModel>>(buildings);
             return new BaseResponseModel() { Status = StatusCodes.Status200OK, Message = ConstantResponse.GET_BUILDING_SUCCESS, Result = response };
 
