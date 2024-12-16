@@ -171,7 +171,7 @@ namespace SchedulifySystem.Service.Services.Implements
                 // Chọn lọc
                 timetablePopulation.AddRange(timetableChildren);
                 //TabuSearch(timetablePopulation[0], parameters);
-                timetablePopulation = timetablePopulation.Where(u => u.Age < u.Longevity).OrderBy(i => i.Adaptability).Take(100).ToList();
+                //timetablePopulation = timetablePopulation.Where(u => u.Age < u.Longevity).OrderBy(i => i.Adaptability).Take(100).ToList();
 
                 var topIndividuals = timetablePopulation.OrderBy(i => i.Adaptability).Take(80).ToList();
                 var randomIndividuals = timetablePopulation.Shuffle().Take(20).ToList();
@@ -288,24 +288,27 @@ namespace SchedulifySystem.Service.Services.Implements
             }
             ).ToList();
             result.ClassCombinations = combinationsViewModels;
-
-            if (parameters.CurrentUserEmail != null)
+            if (stopwatch.Elapsed.TotalSeconds < parameters.MaxExecutionTimeInSeconds)
             {
-                var user = await _unitOfWork.UserRepo.GetAsync(filter: t => t.Email == parameters.CurrentUserEmail && t.Status == (int)AccountStatus.Active)
-                               ?? throw new NotExistsException(ConstantResponse.ACCOUNT_NOT_EXIST);
-
-                Console.WriteLine($"user:  {user}");
-                Console.WriteLine($"CurrentUserEmail:  {parameters.CurrentUserEmail}");
-
-                NotificationModel noti = new NotificationModel
+                if (parameters.CurrentUserEmail != null)
                 {
-                    Title = "Tạo thời khóa biểu thành công",
-                    Message = $"Thời khóa biểu tên {parameters.TimetableName} đã được tạo thành công ngày {TimeUtils.ConvertToLocalTime(DateTime.UtcNow):dd/MM/yyyy HH:mm:ss}",
-                    Type = ENotificationType.HeThong,
-                    Link = ""
-                };
-                await _notificationService.SendNotificationToUser(user.FirstOrDefault().Id, noti);
+                    var user = await _unitOfWork.UserRepo.GetAsync(filter: t => t.Email == parameters.CurrentUserEmail && t.Status == (int)AccountStatus.Active)
+                                   ?? throw new NotExistsException(ConstantResponse.ACCOUNT_NOT_EXIST);
+
+                    Console.WriteLine($"user:  {user}");
+                    Console.WriteLine($"CurrentUserEmail:  {parameters.CurrentUserEmail}");
+
+                    NotificationModel noti = new NotificationModel
+                    {
+                        Title = "Tạo thời khóa biểu thành công",
+                        Message = $"Thời khóa biểu tên {parameters.TimetableName} đã được tạo thành công ngày {TimeUtils.ConvertToLocalTime(DateTime.UtcNow):dd/MM/yyyy HH:mm:ss}",
+                        Type = ENotificationType.HeThong,
+                        Link = ""
+                    };
+                    await _notificationService.SendNotificationToUser(user.FirstOrDefault().Id, noti);
+                }
             }
+
 
             var executionTime = stopwatch.Elapsed;
             result.ExcuteTime = executionTime.TotalSeconds;
@@ -2698,7 +2701,7 @@ namespace SchedulifySystem.Service.Services.Implements
                         }
                         else
                         {
-                            var getAlreadyClassPeriod = (await _unitOfWork.PeriodChangeRepo.GetAsync( filter: t => t.ClassPeriodId == periodChange.ClassPeriodId && t.Week == periodChange.Week)).FirstOrDefault();
+                            var getAlreadyClassPeriod = (await _unitOfWork.PeriodChangeRepo.GetAsync(filter: t => t.ClassPeriodId == periodChange.ClassPeriodId && t.Week == periodChange.Week)).FirstOrDefault();
 
                             if (getAlreadyClassPeriod != null)
                             {
