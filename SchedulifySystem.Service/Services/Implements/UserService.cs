@@ -70,15 +70,17 @@ namespace SchedulifySystem.Service.Services.Implements
                             Message = ConstantResponse.SCHOOL_MANAGERR_ALREADY_CONFIRM
                         };
                     }
-                    schoolManager.IsConfirmSchoolManager = true;
                     schoolManager.Status = (int)accountStatus;
                     if (schoolManager.Status == 1)
                     {
                         school.Status = (int)SchoolStatus.Active;
                         school.UpdateDate = DateTime.UtcNow;
                         _unitOfWork.SchoolRepo.Update(school);
+                        await _unitOfWork.SaveChangesAsync();
                     }
                     schoolManager.UpdateDate = DateTime.UtcNow;
+                    schoolManager.IsConfirmSchoolManager = true;
+
                     _unitOfWork.UserRepo.Update(schoolManager);
 
                     await _unitOfWork.SaveChangesAsync();
