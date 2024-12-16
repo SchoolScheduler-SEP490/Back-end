@@ -11,7 +11,7 @@ namespace SchedulifySystem.Service.Services.Interfaces
 {
     public interface ITeacherService
     {
-        Task<BaseResponseModel> GetTeachers(int schoolId, TeacherStatus? teacherStatus, int? departmentId, bool includeDeleted, int pageIndex, int pageSize);
+        Task<BaseResponseModel> GetTeachers(int schoolId, string? Name, TeacherStatus? teacherStatus, int? departmentId, bool includeDeleted, int pageIndex, int pageSize);
         Task<BaseResponseModel> CreateTeacher(CreateTeacherModel createTeacherRequestModel);
         Task<BaseResponseModel> CreateTeachers(int schoolId, List<CreateListTeacherModel> createTeacherRequestModels);
         Task<BaseResponseModel> UpdateTeacher(int id, UpdateTeacherModel updateTeacherRequestModel);

@@ -22,9 +22,9 @@ namespace SchedulifySystem.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "SchoolManager, TeacherDepartmentHead, Teacher")]
-        public Task<IActionResult> GetTeachers(int schoolId, TeacherStatus? teacherStatus, int? departmentId = null, bool includeDeleted = false, int pageSize = 20, int pageIndex = 1)
+        public Task<IActionResult> GetTeachers(int schoolId, string? Name, TeacherStatus? teacherStatus, int? departmentId = null, bool includeDeleted = false, int pageSize = 20, int pageIndex = 1)
         {
-            return ValidateAndExecute(() => _teacherService.GetTeachers(schoolId, teacherStatus, departmentId, includeDeleted, pageIndex, pageSize));
+            return ValidateAndExecute(() => _teacherService.GetTeachers(schoolId, Name, teacherStatus, departmentId, includeDeleted, pageIndex, pageSize));
         }
 
 
