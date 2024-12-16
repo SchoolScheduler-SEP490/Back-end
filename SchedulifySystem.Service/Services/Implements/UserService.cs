@@ -79,6 +79,9 @@ namespace SchedulifySystem.Service.Services.Implements
                     }
                     schoolManager.UpdateDate = DateTime.UtcNow;
                     _unitOfWork.UserRepo.Update(schoolManager);
+
+                    school.Status = (int)SchoolStatus.Active;
+                    _unitOfWork.SchoolRepo.Update(school);
                     await _unitOfWork.SaveChangesAsync();
 
                     var messageRequest = new EmailRequest
