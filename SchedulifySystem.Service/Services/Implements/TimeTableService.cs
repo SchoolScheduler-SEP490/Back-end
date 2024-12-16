@@ -2676,7 +2676,6 @@ namespace SchedulifySystem.Service.Services.Implements
                                 };
                             }
 
-
                             getClassPeriod.StartAt = periodChange.StartAt;
                             getClassPeriod.UpdateDate = DateTime.UtcNow;
                             if (periodChange.TeacherId != null)
@@ -2684,10 +2683,15 @@ namespace SchedulifySystem.Service.Services.Implements
                                 getClassPeriod.TeacherId = periodChange.TeacherId;
                             }
 
+
                             if (periodChange.RoomId != null)
                             {
                                 getClassPeriod.RoomId = periodChange.RoomId;
                             }
+
+                            var periodChanges = await _unitOfWork.PeriodChangeRepo.GetV2Async(filter: t => t.ClassPeriodId == getClassPeriod.Id && !t.IsDeleted);
+                            _unitOfWork.PeriodChangeRepo.RemoveRange(periodChanges);
+
                             _unitOfWork.ClassPeriodRepo.Update(getClassPeriod);
                             await _unitOfWork.SaveChangesAsync();
 
