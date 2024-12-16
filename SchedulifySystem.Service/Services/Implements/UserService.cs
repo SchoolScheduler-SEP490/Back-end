@@ -74,14 +74,13 @@ namespace SchedulifySystem.Service.Services.Implements
                     schoolManager.Status = (int)accountStatus;
                     if (schoolManager.Status == 1)
                     {
-                        school.Status = 1;
+                        school.Status = (int)SchoolStatus.Active;
                         school.UpdateDate = DateTime.UtcNow;
+                        _unitOfWork.SchoolRepo.Update(school);
                     }
                     schoolManager.UpdateDate = DateTime.UtcNow;
                     _unitOfWork.UserRepo.Update(schoolManager);
 
-                    school.Status = (int)SchoolStatus.Active;
-                    _unitOfWork.SchoolRepo.Update(school);
                     await _unitOfWork.SaveChangesAsync();
 
                     var messageRequest = new EmailRequest
