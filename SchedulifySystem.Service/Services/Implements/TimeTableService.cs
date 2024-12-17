@@ -203,6 +203,7 @@ namespace SchedulifySystem.Service.Services.Implements
                 /*kiểm tra xem id cá thể tốt nhất hiện tại có = timetableIdBacklog ko
                  nếu bằng tức là cá thể tốt nhất chưa thay đổi, thuật toán đang mắc kẹt ở vòng lặp này
                 backlogCount sẽ đếm số vòng lặp liên tiếp giữ nguyên của cá thể tốt nhất
+                test
                  */
                 if (timetableIdBacklog == best.Id)
                 {
