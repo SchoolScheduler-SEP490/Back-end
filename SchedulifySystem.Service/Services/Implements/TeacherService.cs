@@ -683,7 +683,7 @@ namespace SchedulifySystem.Service.Services.Implements
                 {
                     teacherViewModels.IsHomeRoomTeacher = false;
                 }
-
+                // check
                 var getAccount = await _unitOfWork.UserRepo.GetV2Async(filter: t => t.Email == teacher.Email && t.Status == (int)AccountStatus.Active);
                 if(!getAccount.Any())
                 {
