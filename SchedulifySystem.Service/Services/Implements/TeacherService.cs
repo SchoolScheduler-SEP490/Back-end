@@ -113,7 +113,7 @@ namespace SchedulifySystem.Service.Services.Implements
                     FirstName = teacher.FirstName,
                     LastName = teacher.LastName,
                     SchoolId = school.Id,
-                    IsChangeDefaultPassword = false,
+                    IsChangeDefaultPassword = true,
                     Status = (int)AccountStatus.Active,
                     Phone = teacher.Phone,
                     AvatarURL = teacher.AvatarURL,
@@ -683,6 +683,13 @@ namespace SchedulifySystem.Service.Services.Implements
                 {
                     teacherViewModels.IsHomeRoomTeacher = false;
                 }
+
+                var getAccount = await _unitOfWork.UserRepo.GetV2Async(filter: t => t.Email == teacher.Email && t.Status == (int)AccountStatus.Active);
+                if(!getAccount.Any())
+                {
+                    teacherViewModels.IsHasAccount = true;
+                }
+
                 return teacher != null ? new BaseResponseModel() { Status = StatusCodes.Status200OK, Result = teacherViewModels } :
                     new BaseResponseModel() { Status = StatusCodes.Status404NotFound, Message = ConstantResponse.TEACHER_NOT_EXIST };
             }
