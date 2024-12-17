@@ -687,7 +687,7 @@ namespace SchedulifySystem.Service.Services.Implements
                 var getAccount = await _unitOfWork.UserRepo.GetV2Async(filter: t => t.Email == teacher.Email && t.Status == (int)AccountStatus.Active);
                 if(!getAccount.Any())
                 {
-                    teacherViewModels.IsHasAccount = true;
+                    teacherViewModels.IsHaveAccount = true;
                 }
 
                 return teacher != null ? new BaseResponseModel() { Status = StatusCodes.Status200OK, Result = teacherViewModels } :
