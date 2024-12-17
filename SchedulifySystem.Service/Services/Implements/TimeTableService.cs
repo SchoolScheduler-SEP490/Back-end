@@ -3341,8 +3341,9 @@ namespace SchedulifySystem.Service.Services.Implements
                 .Distinct()
                 .ToList();
 
-            var availableRooms = await _unitOfWork.RoomRepo.GetAsync(filter: r =>
-                !busyRoomIds.Contains(r.Id) && !r.IsDeleted && r.MaxClassPerTime >= totalClassesInGroup);
+            var availableRooms = await _unitOfWork.RoomRepo.GetV2Async(filter: r =>
+                !busyRoomIds.Contains(r.Id) && r.Building.School.Id == schoolId && !r.IsDeleted && r.MaxClassPerTime >= totalClassesInGroup,
+                include: t => t.Include(a => a.Building).ThenInclude(r => r.School));
 
             response.AvailableRooms = availableRooms.Select(r => new RoomView
             {
